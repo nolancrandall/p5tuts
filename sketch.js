@@ -9,9 +9,15 @@ a = 0
 b = 100
 c = 1
 d = -1
-
+cloud1 = 0
+speed = 10 
+var stars = []
 function setup() {
   createCanvas(1920, 963);
+  for (var s = 0; s < 500; s++){
+    stars[s] = [random(0, width), random(0, height)]
+
+  }
 }
 function draw() {
 // var x = map(noise(xoff1), 0, 1, 0, width);
@@ -29,7 +35,15 @@ multi = 1 + rand
   fill(19,24,98, a);
   rect(0, 0, width, height)
 //   ellipse(x, y, 20, 20);
-
+  // stars during night time
+  w = random(3, 3)
+  fill(255,226,52, a - random(20, 80))
+  for (var s = 0; s < 500; s ++) {
+    
+    stroke(255,226,52, a - random(20, 80))
+    ellipse(stars[s][0], stars[s][1], w, w);    
+    
+  }
   stroke(255);
   fill(60, 100, 50);
   beginShape();
@@ -53,14 +67,46 @@ multi = 1 + rand
   start += inc
   inc2 += .002
 
-  fill(84, 84, 84, 230);
-  noStroke();
-  ellipse(h, l, 120, 70);
-  ellipse(h - 43, l, 76, 45);
-  ellipse(h + 51, l, 65, 35);
-  h += 0.5;
 
-  if(frameCount % 5 == 0){
+  stroke(40, 40, 40)
+  fill(80, 80, 80)
+  beginShape();
+  for(let v = 0; v < TWO_PI; v+= .005) {
+      let xoff = cos(v) + 1;
+      let yoff = sin(v) + 1;
+      let r = map(noise(xoff, yoff), .1, .8, 150, 100);
+      let x = r * cos(v) + 50;
+      let y = r * sin(v) / 2 + 100;
+      vertex(x + cloud1, y);
+
+  }
+  endShape(CLOSE);
+  
+
+
+
+  // cloud code
+  // fill(84, 84, 84, 230);
+  // beginShape();
+  // for(let v = 0; v < TWO_PI; v+= .01) {
+  //   let r = random(50, 100);
+  //   let x = r * cos(a);
+  //   let y = r * sin(a);
+  //   vertex(x, y);
+
+  // }
+  // endShape();
+
+
+  // noStroke();
+  // ellipse(h, l, 120, 70);
+  // ellipse(h - 43, l, 76, 45);
+  // ellipse(h + 51, l, 65, 35);
+  // h += 0.5;
+
+
+
+  if(frameCount % 3 == 0){
   a += c
   b += d
   }
@@ -72,6 +118,15 @@ multi = 1 + rand
     c *= -1
     d *= -1
   }
+
+  cloud1 += speed
+  if(cloud1 > 1700){
+    abs(speed) * -1
+  }
+  if(cloud1 < -200){
+    speed * -1
+  }
+  
 
 
 
