@@ -10,7 +10,9 @@ b = 100
 c = 1
 d = -1
 cloud1 = 0
-speed = 10 
+speed = 3
+change = 0
+altitude = 50
 var stars = []
 function setup() {
   createCanvas(1920, 963);
@@ -36,6 +38,7 @@ multi = 1 + rand
   rect(0, 0, width, height)
 //   ellipse(x, y, 20, 20);
   // stars during night time
+  
   w = random(3, 3)
   fill(255,226,52, a - random(20, 80))
   for (var s = 0; s < 500; s ++) {
@@ -44,13 +47,26 @@ multi = 1 + rand
     ellipse(stars[s][0], stars[s][1], w, w);    
     
   }
-  stroke(255);
+  stroke(140 - a, 150 - a, 140 - a)
+  fill(185 - a, 195 - a, 185 - a, 200)
+  beginShape();
+  for(let v = 0; v < TWO_PI; v+= .005) {
+      let xoff = cos(v) + 1 + change;
+      let yoff = sin(v) + 1 + change;
+      let r = map(noise(xoff, yoff), .5, .8, 150, 100);
+      let x = r * cos(v) + 50;
+      let y = r * sin(v) / 2 + altitude;
+      vertex(x + cloud1, y);
+
+  }
+  endShape(CLOSE);
+
   fill(60, 100, 50);
   beginShape();
   var xoff = start
   for (var x = 0; x < width; x ++) {
     for (var i = 0; i < 13; i += 1){
-      stroke(66, 105, 47);
+      stroke(60, 100, 50);
       var y = noise(xoff) * height * multi;
       vertex(x + i, y);
       xoff += .003;
@@ -68,20 +84,7 @@ multi = 1 + rand
   inc2 += .002
 
 
-  stroke(40, 40, 40)
-  fill(80, 80, 80)
-  beginShape();
-  for(let v = 0; v < TWO_PI; v+= .005) {
-      let xoff = cos(v) + 1;
-      let yoff = sin(v) + 1;
-      let r = map(noise(xoff, yoff), .1, .8, 150, 100);
-      let x = r * cos(v) + 50;
-      let y = r * sin(v) / 2 + 100;
-      vertex(x + cloud1, y);
 
-  }
-  endShape(CLOSE);
-  
 
 
 
@@ -106,7 +109,7 @@ multi = 1 + rand
 
 
 
-  if(frameCount % 3 == 0){
+  if(frameCount % 9 == 0){
   a += c
   b += d
   }
@@ -120,13 +123,13 @@ multi = 1 + rand
   }
 
   cloud1 += speed
-  if(cloud1 > 1700){
-    abs(speed) * -1
-  }
-  if(cloud1 < -200){
-    speed * -1
+  if(cloud1 > 2300){
+    cloud1 = -200;
+    change += 1;
+    altitude = random(100, 500);
   }
   
+  console.log(cloud1)
 
 
 
